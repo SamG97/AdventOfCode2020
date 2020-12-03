@@ -29,7 +29,7 @@ std::vector<PasswordEntry> readInput() {
     return input;
 }
 
-int partOne(std::vector<PasswordEntry> passwords) {
+int partOne(const std::vector<PasswordEntry>& passwords) {
     int num_valid = 0;
     for (auto& p : passwords) {
         auto occurrences =
@@ -41,7 +41,7 @@ int partOne(std::vector<PasswordEntry> passwords) {
     return num_valid;
 }
 
-int partTwo(std::vector<PasswordEntry> passwords) {
+int partTwo(const std::vector<PasswordEntry>& passwords) {
     int num_valid = 0;
     for (auto& p : passwords) {
         bool left = p.password[p.min - 1] == p.c;

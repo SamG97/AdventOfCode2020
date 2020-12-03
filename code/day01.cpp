@@ -30,11 +30,11 @@ int sumSearch(Iterator begin, Iterator end, int target) {
     return -1; // Could not find a solution
 }
 
-int partOne(std::vector<int> input) {
+int partOne(const std::vector<int> input) {
     return sumSearch(input.begin(), input.end(), 2020);
 }
 
-int partTwo(std::vector<int> input) {
+int partTwo(const std::vector<int> input) {
     for (auto i = input.begin(); i < input.end(); ++i) {
         int prod = sumSearch(i, input.end(), 2020 - *i);
         if (prod != -1) {

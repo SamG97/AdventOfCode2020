@@ -1,9 +1,9 @@
 CXX      := g++
-CXXFLAGS := -std=c++17
+CXXFLAGS := -std=c++17 -ltbb
 
 
 %: code/%.cpp utils
-	$(CXX) $(CXXFLAGS) build/utils.o $< -o build/$@
+	$(CXX) -g build/utils.o $< -o build/$@ $(CXXFLAGS)
 
 utils:
-	$(CXX) $(CXXFLAGS) -c code/utils.cpp -o build/utils.o
+	$(CXX) -c code/utils.cpp -o build/utils.o $(CXXFLAGS)
