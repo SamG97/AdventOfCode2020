@@ -55,7 +55,7 @@ int partTwo(const std::vector<PasswordEntry>& passwords) {
 
 int main() {
     auto input = readInput();
-    std::cout << partOne(input) << "\n";
-    std::cout << partTwo(input) << "\n";
+    std::cout << timeit(partOne)(input) << "\n";
+    std::cout << timeit(partTwo)(input) << "\n";
     return 0;
 }

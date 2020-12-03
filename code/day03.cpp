@@ -4,6 +4,7 @@
 #include <iostream>
 #include <numeric>
 #include <vector>
+#include "utils.h"
 
 std::vector<std::string> readInput() {
     std::vector<std::string> input;
@@ -45,7 +46,9 @@ long partTwo(const std::vector<std::string>& input) {
     // to do it manually here
     results.resize(options.size());
 
-    std::transform(std::execution::par_unseq, options.begin(), options.end(),
+    // Much faster to run sequentially than in parallel but keep the option
+    // open with the execution policy
+    std::transform(std::execution::seq, options.begin(), options.end(),
                    results.begin(), [input](std::pair<int, int>& option) {
                        return findTrees(input, option.first, option.second);
                    });
@@ -55,7 +58,7 @@ long partTwo(const std::vector<std::string>& input) {
 
 int main() {
     auto input = readInput();
-    std::cout << partOne(input) << "\n";
-    std::cout << partTwo(input) << "\n";
+    std::cout << timeit(partOne)(input) << std::endl;
+    std::cout << timeit(partTwo)(input) << std::endl;
     return 0;
 }
