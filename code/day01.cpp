@@ -5,7 +5,7 @@
 
 std::vector<int> readInput() {
     std::vector<int> input;
-    std::ifstream ifs {"inputs/day01.txt"};
+    std::ifstream ifs{"inputs/day01.txt"};
     int line;
     while (ifs >> line) {
         input.push_back(line);
@@ -22,12 +22,12 @@ int sumSearch(Iterator begin, Iterator end, int target) {
         if (sum == target) {
             return *i * *j;
         } else if (sum < target) {
-            ++i;  // Make sum bigger
-        } else {  // sum > target
-            --j;  // Make sum smaller
+            ++i; // Make sum bigger
+        } else { // sum > target
+            --j; // Make sum smaller
         }
     }
-    return -1;  // Could not find a solution
+    return -1; // Could not find a solution
 }
 
 int partOne(std::vector<int> input) {
@@ -41,12 +41,12 @@ int partTwo(std::vector<int> input) {
             return *i * prod;
         }
     }
-    return -1;  // Hopefully shouldn't trigger
+    return -1; // Hopefully shouldn't trigger
 }
 
 int main() {
     auto input = readInput();
-    std::sort(input.begin(), input.end());  // Solution assumes sorted input
+    std::sort(input.begin(), input.end()); // Solution assumes sorted input
     std::cout << partOne(input) << "\n";
     std::cout << partTwo(input) << "\n";
     return 0;
