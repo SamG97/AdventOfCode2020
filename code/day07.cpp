@@ -1,5 +1,4 @@
 #include "utils.h"
-#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <regex>
@@ -42,17 +41,30 @@ BagRules readInput() {
 }
 
 int partOne(const BagRules& bagRules) {
+    std::unordered_map<std::string, std::vector<std::string>> containedBy;
+    for (auto& rule : bagRules) {
+        for (auto& bag : rule.second) {
+            std::string bagColour = bag.colour;
+            auto otherBags = containedBy.find(bagColour);
+            if (otherBags == containedBy.end()) {
+                containedBy.insert({bagColour, {rule.first}});
+            } else {
+                otherBags->second.push_back(rule.first);
+            }
+        }
+    }
+
     std::unordered_set<std::string> allFound{};
-    std::unordered_set<std::string> frontier{"shiny gold"};
+    std::vector<std::string> frontier{"shiny gold"};
     while (frontier.size() != 0) {
-        std::unordered_set<std::string> newFrontier{};
-        for (auto& rule : bagRules) {
-            for (auto& bag : rule.second) {
-                if (frontier.count(bag.colour)) {
-                    if (!allFound.count(rule.first)) {
-                        newFrontier.insert(rule.first);
-                        allFound.insert(rule.first);
-                        break;
+        std::vector<std::string> newFrontier{};
+        for (auto& colour : frontier) {
+            auto parents = containedBy.find(colour);
+            if (parents != containedBy.end()) {
+                for (auto container : parents->second) {
+                    if (!allFound.count(container)) {
+                        newFrontier.push_back(container);
+                        allFound.insert(container);
                     }
                 }
             }
