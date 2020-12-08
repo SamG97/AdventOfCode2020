@@ -45,43 +45,69 @@ int partOne(const std::vector<Instruction>& instructions) {
     }
 }
 
-int runProgram(const std::vector<Instruction>& instructions,
-               std::vector<bool> visited, int pc, int accum, bool canFlip) {
-    if (pc >= instructions.size()) {
-        return accum;
-    }
-    if (visited[pc]) {
-        return -1;
-    }
-    visited[pc] = true;
+void updateTerminates(const std::vector<std::vector<int>>& prev,
+                     std::vector<bool>& terminates, int root) {
+    // Already seen this point so don't bother updating reachable nodes again
+    if (terminates[root])
+        return;
 
-    Instruction instruction = instructions[pc];
-    if (instruction.opcode == "jmp") {
-        int result = runProgram(instructions, visited,
-                                pc + instruction.operand, accum, canFlip);
-        if (result == -1 && canFlip) {
-            return runProgram(instructions, visited, pc + 1, accum, false);
-        } else {
-            return result;
-        }
-    } else if (instruction.opcode == "acc") {
-        return runProgram(instructions, visited, pc + 1,
-                          accum + instruction.operand, canFlip);
-    } else {
-        int result = runProgram(instructions, visited, pc + 1, accum, canFlip);
-        if (result == -1 && canFlip) {
-            return runProgram(instructions, visited, pc + instruction.operand,
-                              accum, false);
-        } else {
-            return result;
-        }
+    terminates[root] = true;  // Reached from a point that terminates
+    for (auto& toUpdate : prev[root]) {
+        updateTerminates(prev, terminates, toUpdate);
     }
 }
 
 int partTwo(const std::vector<Instruction>& instructions) {
-    std::vector<bool> visited;
-    visited.resize(instructions.size(), false);
-    return runProgram(instructions, visited, 0, 0, true);
+    std::vector<std::vector<int>> prev;
+    prev.resize(instructions.size(), std::vector<int>{});
+    std::vector<int> immediateTermination{};
+
+    // Create a mapping from each pc count to all instructions that could
+    // immediately preceed it
+    for (int i = 0; i < instructions.size(); ++i) {
+        Instruction instruction = instructions[i];
+        int nextPc =
+            i + (instruction.opcode == "jmp" ? instruction.operand : 1);
+        if (nextPc >= instructions.size()) {
+            immediateTermination.push_back(i);
+        } else {
+            prev[nextPc].push_back(i);
+        }
+    }
+
+    // Trace along the graph of previous instructions to find all instructions
+    // that can reach an instruction that immediately terminates
+    std::vector<bool> terminates;
+    terminates.resize(instructions.size(), false);
+    for (auto& i : immediateTermination) {
+        updateTerminates(prev, terminates, i);
+    }
+
+    // Run the program flipping an instruction which currently is not in the
+    // terminating set but by changing its opcode could be
+    int pc = 0;
+    int accumulator = 0;
+    while (true) {
+        if (pc >= instructions.size()) {
+            return accumulator;
+        }
+
+        Instruction instruction = instructions[pc];
+        if (instruction.opcode == "jmp") {
+            if (!terminates[pc] && terminates[pc + 1])
+                ++pc;
+            else
+                pc += instruction.operand;
+        } else if (instruction.opcode == "acc") {
+            accumulator += instruction.operand;
+            ++pc;
+        } else {
+            if (!terminates[pc] && terminates[pc + instruction.operand])
+                pc += instruction.operand;
+            else
+                ++pc;
+        }
+    }
 }
 
 int main() {
