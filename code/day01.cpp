@@ -34,13 +34,17 @@ int sumSearch(const Iterator begin, const Iterator end, int target) {
 }
 
 int partOne(const std::vector<int>& input) {
-    return sumSearch(input.begin(), input.end(), 2020);
+    std::vector<int> sortedInput{input};
+    std::sort(sortedInput.begin(), sortedInput.end());
+    return sumSearch(sortedInput.begin(), sortedInput.end(), 2020);
 }
 
 int partTwo(const std::vector<int>& input) {
-    for (auto i = input.begin(); i != input.end(); ++i) {
+    std::vector<int> sortedInput{input};
+    std::sort(sortedInput.begin(), sortedInput.end());
+    for (auto i = sortedInput.begin(); i != sortedInput.end(); ++i) {
         // Start search from next element to avoid checking ourselves
-        int prod = sumSearch(i + 1, input.end(), 2020 - *i);
+        int prod = sumSearch(i + 1, sortedInput.end(), 2020 - *i);
         if (prod != -1) {
             return *i * prod;
         }
@@ -50,7 +54,6 @@ int partTwo(const std::vector<int>& input) {
 
 int main() {
     auto input = readInput();
-    std::sort(input.begin(), input.end()); // Solution assumes sorted input
     std::cout << timeit(partOne)(input) << "\n";
     std::cout << timeit(partTwo)(input) << "\n";
     return 0;
