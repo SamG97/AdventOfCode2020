@@ -21,7 +21,7 @@ int partOne(const std::vector<int>& adaptors) {
 
     int oneApart = 0;
     int threeApart = 1;  // Final jump is guaranteed to be 3 to our device
-    for (int i = 1; i < sortedAdaptors.size(); ++i) {
+    for (int i = 1; i < static_cast<int>(sortedAdaptors.size()); ++i) {
         int diff = sortedAdaptors[i] - sortedAdaptors[i - 1];
         if (diff == 1)
             ++oneApart;

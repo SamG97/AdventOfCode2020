@@ -1,5 +1,5 @@
 CXX      := g++
-CXXFLAGS := -std=c++17 -ltbb
+CXXFLAGS := -std=c++17 -ltbb -W
 
 
 %: code/%.cpp utils

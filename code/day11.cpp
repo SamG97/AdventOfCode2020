@@ -15,7 +15,8 @@ std::vector<std::string> readInput() {
 }
 
 bool seatTaken(const std::vector<std::string>& seats, int row, int col) {
-    if (row < 0 || row >= seats.size() || col < 0 || col >= seats[0].size())
+    if (row < 0 || row >= static_cast<int>(seats.size()) || col < 0
+        || col >= static_cast<int>(seats[0].size()))
         return false;
     else
         return seats[row][col] == '#';
@@ -27,9 +28,10 @@ int partOne(const std::vector<std::string>& seats) {
     bool changed = true;
     while (changed) {
         changed = false;
-        for (int row = 0; row < _seats.size(); ++row) {
+        for (int row = 0; row < static_cast<int>(_seats.size()); ++row) {
             std::string newRow;
-            for (int col = 0; col < _seats[row].size(); ++col) {
+            for (int col = 0; col < static_cast<int>(_seats[row].size());
+                 ++col) {
                 char currentState = _seats[row][col];
                 if (currentState == '.') {
                     newRow.push_back('.');
@@ -71,7 +73,8 @@ bool visibleSeat(const std::vector<std::string>& seats, int row, int col,
                  int di, int dj) {
     int i = row + di;
     int j = col + dj;
-    while (i >= 0 && i < seats.size() && j >= 0 && j < seats[0].size()) {
+    while (i >= 0 && i < static_cast<int>(seats.size()) && j >= 0
+           && j < static_cast<int>(seats[0].size())) {
         if (seats[i][j] == '#')
             return true;
         else if (seats[i][j] == 'L')
@@ -88,9 +91,10 @@ int partTwo(const std::vector<std::string>& seats) {
     bool changed = true;
     while (changed) {
         changed = false;
-        for (int row = 0; row < _seats.size(); ++row) {
+        for (int row = 0; row < static_cast<int>(_seats.size()); ++row) {
             std::string newRow;
-            for (int col = 0; col < _seats[row].size(); ++col) {
+            for (int col = 0; col < static_cast<int>(_seats[row].size());
+                 ++col) {
                 char currentState = _seats[row][col];
                 if (currentState == '.') {
                     newRow.push_back('.');

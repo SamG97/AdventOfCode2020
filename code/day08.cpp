@@ -64,11 +64,11 @@ int partTwo(const std::vector<Instruction>& instructions) {
 
     // Create a mapping from each pc count to all instructions that could
     // immediately preceed it
-    for (int i = 0; i < instructions.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(instructions.size()); ++i) {
         Instruction instruction = instructions[i];
         int nextPc =
             i + (instruction.opcode == "jmp" ? instruction.operand : 1);
-        if (nextPc >= instructions.size()) {
+        if (nextPc >= static_cast<int>(instructions.size())) {
             immediateTermination.push_back(i);
         } else {
             prev[nextPc].push_back(i);
@@ -88,7 +88,7 @@ int partTwo(const std::vector<Instruction>& instructions) {
     int pc = 0;
     int accumulator = 0;
     while (true) {
-        if (pc >= instructions.size()) {
+        if (pc >= static_cast<int>(instructions.size())) {
             return accumulator;
         }
 

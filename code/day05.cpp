@@ -56,7 +56,7 @@ int partTwo(const std::vector<std::string>& reservations) {
     }
     
     int startRow = (minID - 1) / 8 + 1;  // Start on first full row
-    for (int row = startRow; row < taken.size(); ++row) {
+    for (int row = startRow; row < static_cast<int>(taken.size()); ++row) {
         if (taken[row] == 0xFF) {
             continue;
         }

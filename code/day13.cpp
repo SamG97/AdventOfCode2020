@@ -58,7 +58,7 @@ long partTwo(const InputType& input) {
     // iteratively add each extra bus
     long base = buses[0].frequency;
     long n = base;
-    for (int i = 1; i < buses.size(); ++i) {
+    for (int i = 1; i < static_cast<int>(buses.size()); ++i) {
         if (!buses[i].running)
             continue;
 

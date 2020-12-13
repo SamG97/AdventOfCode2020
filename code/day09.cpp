@@ -60,7 +60,8 @@ int partTwo(const std::vector<int>& code) {
     int i = 0;
     int j = 1;
     int runningTotal = code[i] + code[j];
-    while (i < code.size() and j < code.size()) {
+    while (i < static_cast<int>(code.size())
+           and j < static_cast<int>(code.size())) {
         if (runningTotal == target) {
             int min = INT32_MAX;
             int max = 0;
