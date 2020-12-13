@@ -5,14 +5,13 @@
 #include <vector>
 
 struct Bus {
-    Bus(): running{false} {}
-    Bus(int t): running(true), frequency(t) {}
+    Bus() : running{false} {}
+    Bus(int t) : running(true), frequency(t) {}
     bool running;
     int frequency;
 };
 
 using InputType = std::pair<int, std::vector<Bus>>;
-
 
 InputType readInput() {
     std::vector<Bus> input;
@@ -62,7 +61,7 @@ long partTwo(const InputType& input) {
     for (int i = 1; i < buses.size(); ++i) {
         if (!buses[i].running)
             continue;
-        
+
         // Increment our solution for past buses, n, until it is also a
         // solution for the new bus, whilst still keeping it valid for all
         // previous buses

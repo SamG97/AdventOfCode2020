@@ -6,13 +6,10 @@
 
 enum class Direction { North, South, East, West, Left, Right, Forward };
 
-static const std::unordered_map<char, Direction> convertDirection {
-    {'N', Direction::North},
-    {'S', Direction::South},
-    {'E', Direction::East},
-    {'W', Direction::West},
-    {'L', Direction::Left},
-    {'R', Direction::Right},
+static const std::unordered_map<char, Direction> convertDirection{
+    {'N', Direction::North},   {'S', Direction::South},
+    {'E', Direction::East},    {'W', Direction::West},
+    {'L', Direction::Left},    {'R', Direction::Right},
     {'F', Direction::Forward},
 };
 
@@ -44,8 +41,7 @@ int partOne(const std::vector<Move>& moves) {
     std::pair<int, int> pos = {0, 0};
     int orientation = 1;
     for (auto& move : moves) {
-        switch (move.direction)
-        {
+        switch (move.direction) {
         case Direction::North:
             pos.second += move.size;
             break;
@@ -66,8 +62,7 @@ int partOne(const std::vector<Move>& moves) {
             orientation = (orientation + move.size / 90 + 4) % 4;
             break;
         case Direction::Forward:
-            switch (orientation)
-            {
+            switch (orientation) {
             case 0:
                 pos.second += move.size;
                 break;
@@ -90,8 +85,7 @@ int partTwo(const std::vector<Move>& moves) {
     std::pair<int, int> ship = {0, 0};
     std::pair<int, int> waypoint = {10, 1};
     for (auto& move : moves) {
-        switch (move.direction)
-        {
+        switch (move.direction) {
         case Direction::North:
             waypoint.second += move.size;
             break;
