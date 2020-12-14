@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <stack>
+#include <string>
 #include <vector>
 
 struct Instruction {
