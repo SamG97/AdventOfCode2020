@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 std::vector<int> readInput() {
@@ -15,24 +14,33 @@ std::vector<int> readInput() {
     return input;
 }
 
+void updateHistory(std::vector<int>& history, size_t key, size_t val) {
+    if (key >= history.size())
+        history.resize(key + 1, -1);
+    history[key] = val;
+}
+
 int getCount(const std::vector<int>& nums, size_t target) {
-    std::unordered_map<int, int> history;
-    int lastSaid = 0;
+    // The largest key is only a few million so we can use a vector as a map
+    // instead of unordered_map to make our solution faster as we don't have
+    // to hash the key
+    std::vector<int> history;
+    size_t lastSaid = 0;
     for (size_t t = 0; t < target; ++t) {
         if (t < nums.size()) {
             lastSaid = nums[t];
             if (t > 0)
-                history.insert({nums[t - 1], t - 1});
+                updateHistory(history, nums[t - 1], t - 1);
             continue;
         }
 
-        auto match = history.find(lastSaid);
-        if (match == history.end()) {
-            history.insert({lastSaid, t - 1});
+        if (lastSaid >= history.size() || history[lastSaid] == -1) {
+            updateHistory(history, lastSaid, t - 1);
             lastSaid = 0;
         } else {
-            lastSaid = t - 1 - match->second;
-            match->second = t - 1;
+            int gap = t - 1 - history[lastSaid];
+            updateHistory(history, lastSaid, t - 1);
+            lastSaid = gap;
         }
     }
     return lastSaid;
