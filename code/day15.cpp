@@ -56,7 +56,7 @@ int partTwo(const std::vector<int>& nums) {
 
 int main() {
     auto input = readInput();
-    std::cout << timeit(partOne)(input) << std::endl;
-    std::cout << timeit(partTwo)(input) << std::endl;
+    std::cout << timeit(partOne)(input) << "\n";
+    std::cout << timeit(partTwo)(input) << "\n";
     return 0;
 }
