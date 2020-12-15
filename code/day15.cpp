@@ -14,32 +14,32 @@ std::vector<int> readInput() {
     return input;
 }
 
-void updateHistory(std::vector<int>& history, size_t key, size_t val) {
-    if (key >= history.size())
-        history.resize(key + 1, -1);
-    history[key] = val;
-}
-
 int getCount(const std::vector<int>& nums, size_t target) {
     // The largest key is only a few million so we can use a vector as a map
     // instead of unordered_map to make our solution faster as we don't have
     // to hash the key
-    std::vector<int> history;
-    size_t lastSaid = 0;
-    for (size_t t = 0; t < target; ++t) {
-        if (t < nums.size()) {
-            lastSaid = nums[t];
-            if (t > 0)
-                updateHistory(history, nums[t - 1], t - 1);
-            continue;
-        }
+    // We know that at most two elements will be `target` apart (since we stop
+    // adding new elements to the sequence after this) so we can just
+    // pre-allocate this many elements at the start
+    // We use -1 to represent a 'hasn't occurred yet' sequence element
+    std::vector<int> history(target, -1);
 
-        if (lastSaid >= history.size() || history[lastSaid] == -1) {
-            updateHistory(history, lastSaid, t - 1);
+    // Initialise with the given numbers
+    for (size_t i = 0; i + 1 < nums.size(); ++i) {
+        history[nums[i]] = i;
+    }
+
+    // Last initial number is not inserted and is treated as the previous
+    // value for the first iteration of the main loop and will be inserted
+    // there
+    size_t lastSaid = nums[nums.size() - 1];
+    for (size_t t = nums.size(); t < target; ++t) {
+        if (history[lastSaid] == -1) {
+            history[lastSaid] = t - 1;
             lastSaid = 0;
         } else {
             int gap = t - 1 - history[lastSaid];
-            updateHistory(history, lastSaid, t - 1);
+            history[lastSaid] = t - 1;
             lastSaid = gap;
         }
     }
